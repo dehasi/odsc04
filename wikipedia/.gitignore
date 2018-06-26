@@ -18,3 +18,5 @@ target/
 
 ### SBT ###
 .history
+
+wikipedia.dat
