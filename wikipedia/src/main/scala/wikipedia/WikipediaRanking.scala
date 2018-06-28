@@ -21,10 +21,11 @@ object WikipediaRanking {
     "Objective-C", "Perl", "Scala", "Haskell", "MATLAB", "Clojure", "Groovy")
 
 
-  val conf: SparkConf = ??? // create context
-  val sc: SparkContext = ???
+  val conf: SparkConf = new SparkConf().setAppName("Simple Application")
+  val sc: SparkContext =  new SparkContext(conf)
   // Hint: use a combination of `sc.textFile`, `WikipediaData.filePath` and `WikipediaData.parse`
-  val wikiRdd: RDD[WikipediaArticle] = ???
+
+  val wikiRdd: RDD[WikipediaArticle] = WikipediaData.parse(WikipediaData.filePath).
 
   /** Returns the number of articles on which the language `lang` occurs.
    *  Hint1: consider using method `aggregate` on RDD[T].
