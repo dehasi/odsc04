@@ -21,7 +21,7 @@ object WikipediaRanking {
     "Objective-C", "Perl", "Scala", "Haskell", "MATLAB", "Clojure", "Groovy")
 
 
-  val conf: SparkConf = ???
+  val conf: SparkConf = ??? // create context
   val sc: SparkContext = ???
   // Hint: use a combination of `sc.textFile`, `WikipediaData.filePath` and `WikipediaData.parse`
   val wikiRdd: RDD[WikipediaArticle] = ???
