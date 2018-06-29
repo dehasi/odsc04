@@ -45,8 +45,7 @@ object WikipediaRanking {
    *   several seconds.
    */
   def rankLangs(langs: List[String], rdd: RDD[WikipediaArticle]): List[(String, Int)] = {
-
-    //    rdd.cache()
+    rdd.cache()
     langs.map(lang => (lang, occurrencesOfLang(lang, rdd))).sortBy(_._2).reverse
   }
 
@@ -76,7 +75,7 @@ object WikipediaRanking {
    *   several seconds.
    */
   def rankLangsReduceByKey(langs: List[String], rdd: RDD[WikipediaArticle]): List[(String, Int)] =
-    rdd.flatMap(wa => langs.filter(wa.mentionsLanguage).map(l=> (l, 1)))
+    rdd.flatMap(wa => langs.filter(wa.mentionsLanguage).map(l => (l, 1)))
       .reduceByKey(_ + _).sortBy(-_._2)
       .collect().toList
 
