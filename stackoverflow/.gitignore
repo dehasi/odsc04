@@ -19,4 +19,4 @@ target/
 ### SBT ###
 .history
 
-wikipedia.dat
+stackoverflow.csv
