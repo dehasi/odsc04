@@ -77,7 +77,7 @@ object WikipediaRanking {
    */
   def rankLangsReduceByKey(langs: List[String], rdd: RDD[WikipediaArticle]): List[(String, Int)] =
     rdd.flatMap(wa => langs.filter(wa.mentionsLanguage).map(l=> (l, 1)))
-      .reduceByKey(_ + _)
+      .reduceByKey(_ + _).sortBy(-_._2)
       .collect().toList
 
   def main(args: Array[String]) {
