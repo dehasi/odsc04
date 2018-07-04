@@ -4,6 +4,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkContext._
 import org.apache.spark.rdd.RDD
+
 import annotation.tailrec
 import scala.reflect.ClassTag
 
@@ -277,11 +278,17 @@ class StackOverflow extends Serializable {
     val closest = vectors.map(p => (findClosest(p, means), p))
     val closestGrouped = closest.groupByKey()
 
+    def mostCommonLang(vs: Iterable[(LangIndex, HighScore)]) : String = {
+      vs.map(v => langs(v._1/ langSpread))
+        .map(l => (l, 1))
+        .groupBy(_._1).toStream
+        .map(kv => (kv._1, kv._2.size)).maxBy(_._2)._1
+    }
     val median = closestGrouped.mapValues { vs =>
-      val langLabel: String   = ??? // most common language in the cluster
-      val langPercent: Double = ??? // percent of the questions in the most common language
-      val clusterSize: Int    = ???
-      val medianScore: Int    = ???
+      val langLabel: String   =  mostCommonLang(vs)// most common language in the cluster
+      val langPercent: Double = (100.0 * vs.count(v => v._1 == langs.indexOf(langLabel))) / vs.size// percent of the questions in the most common language
+      val clusterSize: Int    = vs.size // ???
+      val medianScore: Int    = vs.toStream.map(v => v._2).sortWith(_<_).take(vs.size/2).last
 
       (langLabel, langPercent, clusterSize, medianScore)
     }
