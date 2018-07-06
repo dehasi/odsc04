@@ -16,8 +16,8 @@ class StackOverflowSuite extends FunSuite with BeforeAndAfterAll {
     Posting(question, 1, Some(2), None, 1, Option("Java")),
     Posting(answer__, 2, None, Some(1), 1, Option("Java")),
     Posting(question, 3, Some(4), None, 2, Option("Scala")),
-    Posting(answer__, 4, None, Some(3), 3, Option("Scala")),
-    Posting(question, 5, None, None, 2, Option("Scala"))
+    Posting(answer__, 4, None, Some(3), 2, Option("Scala")),
+    Posting(answer__, 5, None, Some(3), 4, Option("Scala"))
   )
 
   val postsRDD = sc.parallelize(posts)
@@ -50,5 +50,13 @@ class StackOverflowSuite extends FunSuite with BeforeAndAfterAll {
   test("groupedPostings") {
     val grouped = StackOverflow.groupedPostings(postsRDD).collect()
     assert(grouped.length == 2)
+  }
+
+  test("scoredPostings"){
+    val grouped = StackOverflow.groupedPostings(postsRDD)
+    val   scored = StackOverflow.scoredPostings(grouped).collect()
+    assert(scored.length == 2)
+    assert(scored(0)._2 == 1)
+    assert(scored(1)._2 == 4)
   }
 }
