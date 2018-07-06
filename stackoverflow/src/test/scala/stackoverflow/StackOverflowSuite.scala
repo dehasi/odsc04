@@ -52,11 +52,22 @@ class StackOverflowSuite extends FunSuite with BeforeAndAfterAll {
     assert(grouped.length == 2)
   }
 
-  test("scoredPostings"){
+  test("scoredPostings") {
     val grouped = StackOverflow.groupedPostings(postsRDD)
-    val   scored = StackOverflow.scoredPostings(grouped).collect()
+    val scored = StackOverflow.scoredPostings(grouped).collect()
     assert(scored.length == 2)
     assert(scored(0)._2 == 1)
     assert(scored(1)._2 == 4)
+  }
+
+  test("vectorPostings") {
+    val grouped = StackOverflow.groupedPostings(postsRDD)
+    val scored = StackOverflow.scoredPostings(grouped)
+    val vectored = StackOverflow.vectorPostings(scored).collect()
+
+    assert(vectored(0)._1 == 50000)
+    assert(vectored(0)._2 == 1)
+    assert(vectored(1)._1 == 500000)
+    assert(vectored(1)._2 == 4)
   }
 }
