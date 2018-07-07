@@ -69,5 +69,7 @@ class StackOverflowSuite extends FunSuite with BeforeAndAfterAll {
     assert(vectored(0)._2 == 1)
     assert(vectored(1)._1 == 500000)
     assert(vectored(1)._2 == 4)
+
+    grouped.partitionBy()
   }
 }
