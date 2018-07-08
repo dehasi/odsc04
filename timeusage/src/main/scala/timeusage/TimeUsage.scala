@@ -92,7 +92,19 @@ object TimeUsage {
     *    “t10”, “t12”, “t13”, “t14”, “t15”, “t16” and “t18” (those which are not part of the previous groups only).
     */
   def classifiedColumns(columnNames: List[String]): (List[Column], List[Column], List[Column]) = {
-    ???
+    val primaryNeeds = List("t01", "t03", "t11", "t1801" ,"t1803")
+    val workingActivities = List("t05", "t1805")
+    val otherActivities = List("t02", "t04", "t06", "t07", "t08", "t09", "t10", "t12", "t13", "t14", "t15", "t16", "t18")
+    val p = columnNames.filter(c => primaryNeeds.exists(p => c.startsWith(p)))
+      .map(c => new Column(c))
+    val w = columnNames.filter(c => workingActivities.exists(p => c.startsWith(p)))
+      .map(c => new Column(c))
+    val o = columnNames.filter(c => otherActivities.exists(p => c.startsWith(p))
+      && !workingActivities.exists(p => c.startsWith(p))
+      && !primaryNeeds.exists(p => c.startsWith(p)))
+      .map(c => new Column(c))
+
+    (p,w,o)
   }
 
   /** @return a projection of the initial DataFrame such that all columns containing hours spent on primary needs
