@@ -19,7 +19,7 @@ class TimeUsageSuite extends FunSuite with BeforeAndAfterAll {
 
   val schema = StructType(List(StructField("key", IntegerType, nullable = false), StructField("value", StringType, nullable = false)))
   val sc = TimeUsage.spark.sparkContext
-
+  import spark.implicits._
 
   val kv1 = KV(1, "one")
   val kv2 = KV(2, "two")
@@ -32,5 +32,9 @@ class TimeUsageSuite extends FunSuite with BeforeAndAfterAll {
     val rowsRdd = sc.parallelize(rows)
     val df = spark.createDataFrame(rowsRdd, schema)
     df.show()
+
+    sc.parallelize(Seq(
+      (1,"example1", Seq(0,2,5)),
+      (2,"example2", Seq(1,20,5)))).toDF().show()
   }
 }
