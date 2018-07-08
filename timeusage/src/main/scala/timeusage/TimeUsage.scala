@@ -205,7 +205,14 @@ object TimeUsage {
     * @param viewName Name of the SQL view to use
     */
   def timeUsageGroupedSqlQuery(viewName: String): String =
-    ???
+    s"""
+    select working, sex, age,
+    round(sum(primaryNeeds) / count(primaryNeeds), 1),
+    round(sum(work) / count(work), 1),
+    round(sum(other) / count(other), 1)
+    from $viewName
+    group by working, sex, age
+    order by working, sex, age """
 
   /**
     * @return A `Dataset[TimeUsageRow]` from the “untyped” `DataFrame`
