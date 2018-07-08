@@ -148,7 +148,7 @@ object TimeUsage {
     // Hint: you can use the `when` and `otherwise` Spark functions
     // Hint: don’t forget to give your columns the expected name with the `as` method
     val workingStatusProjection: Column = df.withColumn("workingStatusProjection", when($"telfs" >=1 ,"working" ).otherwise( "not working")).col("workingStatusProjection")
-    val sexProjection: Column = df.withColumn("sexProjection", when($"sex" ==1, "male").otherwise("female"))
+    val sexProjection: Column = ??? // df.withColumn("sexProjection", when("sex ==1", "male").otherwise("female"))
     val ageProjection: Column = ???
 
     // Create columns that sum columns of the initial dataset
