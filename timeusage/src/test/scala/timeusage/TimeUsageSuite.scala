@@ -33,8 +33,14 @@ class TimeUsageSuite extends FunSuite with BeforeAndAfterAll {
     val df = spark.createDataFrame(rowsRdd, schema)
     df.show()
 
-    sc.parallelize(Seq(
+    val frame = sc.parallelize(Seq(
       (1,"example1", Seq(0,2,5)),
-      (2,"example2", Seq(1,20,5)))).toDF().show()
+      (2,"example2", Seq(1,20,5)))).toDF()
+
+    frame.show()
+    frame.schema.printTreeString()
+
+//    sc.parallelize(list).toDF().show()
+
   }
 }
